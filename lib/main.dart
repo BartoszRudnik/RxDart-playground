@@ -12,7 +12,7 @@ void testIt() async {
       seconds: 1,
     ),
     (count) => 'Stream 1: $count',
-  ).take(3);
+  );
 
   final stream2 = Stream.periodic(
     const Duration(
@@ -21,7 +21,7 @@ void testIt() async {
     (count) => 'Stream 2: $count',
   );
 
-  final result = stream1.concatWith(
+  final result = stream1.mergeWith(
     [
       stream2,
     ],
