@@ -24,3 +24,9 @@ dev_dependencies:
 flutter:
 
   uses-material-design: true
+
+  assets:
+    - assets/text/cats.txt
+    - assets/text/dogs.txt
+
+
