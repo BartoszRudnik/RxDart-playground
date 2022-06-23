@@ -21,10 +21,10 @@ void testIt() async {
     (count) => 'Stream 2: $count',
   );
 
-  final result = stream1.mergeWith(
-    [
-      stream2,
-    ],
+  final result = Rx.zip2(
+    stream1,
+    stream2,
+    (a, b) => 'A is $a, B is $b',
   );
 
   await for (final value in result) {
