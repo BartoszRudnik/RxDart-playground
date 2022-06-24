@@ -78,6 +78,12 @@ class AuthBloc {
     required this.logout,
   });
 
+  void dispose() {
+    login.close();
+    register.close();
+    logout.close();
+  }
+
   factory AuthBloc() {
     final isLoading = BehaviorSubject<bool>();
     final Stream<AuthStatus> authStatus = FirebaseAuth.instance.authStateChanges().map(
