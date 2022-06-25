@@ -24,7 +24,7 @@ class ContactsBloc {
   final Sink<Contact> createContact;
   final Sink<Contact> deleteContact;
   final Stream<Iterable<Contact>> contacts;
-  final StreamSubscription<Contact> _createContactSubscription;
+  final StreamSubscription<void> _createContactSubscription;
   final StreamSubscription<void> _deleteContactSubscription;
 
   void dispose() {
@@ -38,7 +38,7 @@ class ContactsBloc {
     required this.createContact,
     required this.deleteContact,
     required this.contacts,
-    required StreamSubscription<Contact> createContactSubscription,
+    required StreamSubscription<void> createContactSubscription,
     required StreamSubscription<void> deleteContactSubscription,
   })  : _createContactSubscription = createContactSubscription,
         _deleteContactSubscription = deleteContactSubscription;
@@ -64,6 +64,51 @@ class ContactsBloc {
         );
       }
     });
+
+    final createContact = BehaviorSubject<Contact>();
+    final createContactSubscription = createContact
+        .switchMap(
+          (contactToCreate) => userId
+              .take(
+                1,
+              )
+              .unwrap()
+              .asyncMap(
+                (userId) => backend
+                    .collection(
+                      userId,
+                    )
+                    .add(
+                      contactToCreate.data,
+                    ),
+              ),
+        )
+        .listen(
+          (event) {},
+        );
+
+    final deleteContact = BehaviorSubject<Contact>();
+    final deleteContactSubscription = deleteContact
+        .switchMap(
+          (contactToDelete) => userId
+              .take(
+                1,
+              )
+              .unwrap()
+              .asyncMap(
+                (userId) => backend
+                    .collection(
+                      userId,
+                    )
+                    .doc(
+                      contactToDelete.id,
+                    )
+                    .delete(),
+              ),
+        )
+        .listen(
+          (event) {},
+        );
 
     return ContactsBloc._(
       userId: userId,
