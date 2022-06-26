@@ -10,6 +10,25 @@ class LoadingScreen {
 
   LoadingScreenController? loadingScreenController;
 
+  void show({
+    required BuildContext context,
+    required String text,
+  }) {
+    if (loadingScreenController?.updateLoadingScreen(text) ?? false) {
+      return;
+    } else {
+      loadingScreenController = _showOverlay(
+        context: context,
+        text: text,
+      );
+    }
+  }
+
+  void hide() {
+    loadingScreenController?.closeLoadingScreen();
+    loadingScreenController = null;
+  }
+
   LoadingScreenController _showOverlay({
     required BuildContext context,
     required String text,

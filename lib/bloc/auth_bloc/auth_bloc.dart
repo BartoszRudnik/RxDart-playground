@@ -67,6 +67,7 @@ class AuthBloc {
   final Sink<LogInCommand> login;
   final Sink<RegisterCommand> register;
   final Sink<void> logout;
+  final Sink<void> deleteAccount;
 
   const AuthBloc._({
     required this.authStatus,
@@ -76,9 +77,11 @@ class AuthBloc {
     required this.login,
     required this.register,
     required this.logout,
+    required this.deleteAccount,
   });
 
   void dispose() {
+    deleteAccount.close();
     login.close();
     register.close();
     logout.close();
@@ -177,6 +180,8 @@ class AuthBloc {
       logoutError,
     ]);
 
+    final deleteAccount = BehaviorSubject<void>();
+
     return AuthBloc._(
       authStatus: authStatus,
       authError: authError,
@@ -185,6 +190,7 @@ class AuthBloc {
       login: login,
       register: register,
       logout: logout,
+      deleteAccount: deleteAccount,
     );
   }
 }

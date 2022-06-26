@@ -87,11 +87,11 @@ class AppBloc {
     );
   }
 
-  void createContact({
-    required String firstName,
-    required String lastName,
-    required String phoneNumber,
-  }) {
+  void createContact(
+    String firstName,
+    String lastName,
+    String phoneNumber,
+  ) {
     _contactsBloc.createContact.add(
       Contact.withoutId(
         firstName: firstName,
@@ -123,6 +123,11 @@ class AppBloc {
         password: password,
       ),
     );
+  }
+
+  void deleteAccount() {
+    _contactsBloc.deleteAllContacts.add(null);
+    _authBloc.deleteAccount.add(null);
   }
 
   void goToContactListView() => _viewsBloc.goToView.add(
